@@ -100,6 +100,7 @@ You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you 
 
 **remember to stop the instance if you will not use it right away!!!**
 
+8. You can stop the instance by typing: `vm instances` in the search bar. Then you should see a screen with a list of your instances, running or not. Click the instance you just made and click the `stop` icon.
 
 <a id="org34cc87e"></a>
 
