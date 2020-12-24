@@ -79,8 +79,8 @@ this is the important screen, fill in the number of GPUs you want, fill in a req
 
 4.  The relevant code snippet that will **DEPLOY** a virtual machine right away is:
     
-    ```
-export IMAGE_FAMILY="pytorch-latest-gpu"
+    ```shell 
+    export IMAGE_FAMILY="pytorch-latest-gpu"
 export ZONE="europe-west4-[abc]"
 export INSTANCE_NAME="my-instance"
 
@@ -92,8 +92,7 @@ gcloud compute instances create $INSTANCE_NAME \
   --accelerator="type=nvidia-tesla-v100,count=1" \
   --metadata="install-nvidia-driver=True" \
   --preemptible
-
-    ```
+```
     
     You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you have enough quota!).
     
