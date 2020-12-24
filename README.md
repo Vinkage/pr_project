@@ -30,17 +30,17 @@
 
 1.  Make an account using your credit card info with this link <https://cloud.google.com/free>, if everything went alright you will be greeted by the google cloud home screen.
 
-![img](/Users/mikevink/Dropbox (1)/org/.attach/8b/41ab28-71a9-4f20-9f64-c02b03455d2a/_20201224_123544Screenshot 2020-12-24 at 12.35.39.png)
+![img](./readme_dia/img1.png)
 
-1.  On the home screen there is a search bar, type: `billing`, it should show a screen similar to this one, which is the most important to us!:
+2.  On the home screen there is a search bar, type: `billing`, it should show a screen similar to this one, which is the most important to us!:
 
-![img](/Users/mikevink/Dropbox (1)/org/.attach/8b/41ab28-71a9-4f20-9f64-c02b03455d2a/_20201224_123827Screenshot 2020-12-24 at 12.38.21.png)
+![img](./readme_dia/img2.png)
 
 1.  In the bottom right you should see an option to upgrade your account to a paid account, we need this because otherwise we are locked out of requesting GPUs. Click it, and you should see a message reassuring that you will only start paying once your usage exceeds the 250 free trial credits.
 
 2.  On the billing screen we also see health checks, click `View all health checks`. You should see this screen.
     
-    ![img](/Users/mikevink/Dropbox (1)/org/.attach/8b/41ab28-71a9-4f20-9f64-c02b03455d2a/_20201224_124648Screenshot 2020-12-24 at 12.46.46.png)
+![img](./readme_dia/img3.png)
 
 3.  Click on create budget, you will need to give your budget a name and specify an amount. I gave the following `prproj` and `250`. Follow the default options for other steps. **In this way you will be alerted via email when your spending exceeds 50, 90 and 100 percent, but does NOT put a hard cap on your budget.**
 
@@ -53,21 +53,21 @@
 
 1.  Now that we have our account ready, we can request GPUs. Type: `all quota` into the search bar. You should see a screen like this (note that I already did these steps):
 
-![img](/Users/mikevink/Dropbox (1)/org/.attach/4a/e69b5b-f071-4ecf-aed0-fe34ffb41531/_20201224_130007Screenshot 2020-12-24 at 13.00.02.png)
+![img](./readme_dia/img4.png)
 
 1.  The important quota is `GPUs (all regions)` which is 0 by default. I requested 1 GPU by doing the following, but maybe we can do more. First use the `filter table` by clicking on the icon, and selecting metric from the drop down menu. Then type `gpus_all_regions.`
 
-![img](/Users/mikevink/Dropbox (1)/org/.attach/4a/e69b5b-f071-4ecf-aed0-fe34ffb41531/_20201224_130339Screenshot 2020-12-24 at 13.03.34.png)
+![img](./readme_dia/img5.png)
 
-![img](/Users/mikevink/Dropbox (1)/org/.attach/4a/e69b5b-f071-4ecf-aed0-fe34ffb41531/_20201224_130400Screenshot 2020-12-24 at 13.03.58.png)
+![img](./readme_dia/img6.png)
 
 1.  In the GPUs (all regions) quota row click `ALL QUOTAS`,
     
-    ![img](/Users/mikevink/Dropbox (1)/org/.attach/4a/e69b5b-f071-4ecf-aed0-fe34ffb41531/_20201224_130627Screenshot 2020-12-24 at 13.06.23.png)
+![img](./readme_dia/img7.png)
 
 tick the box, and then click `EDIT QUOTAS`,
 
-![img](/Users/mikevink/Dropbox (1)/org/.attach/4a/e69b5b-f071-4ecf-aed0-fe34ffb41531/_20201224_130749Screenshot 2020-12-24 at 13.07.45.png)
+![img](./readme_dia/img8.png)
 
 this is the important screen, fill in the number of GPUs you want, fill in a request motivation (I put Utrecht University masters student), and click `NEXT`.
 
@@ -79,29 +79,25 @@ this is the important screen, fill in the number of GPUs you want, fill in a req
 
 4.  The relevant code snippet that will **DEPLOY** a virtual machine right away is:
     
-    <div class="ex" id="org5297d84">
-    <p>
-    export IMAGE<sub>FAMILY</sub>=&ldquo;pytorch-latest-gpu&rdquo;
-    export ZONE=&ldquo;europe-west4-[abc]&rdquo;
-    export INSTANCE<sub>NAME</sub>=&ldquo;my-instance&rdquo;
-    </p>
-    
-    <p>
-    gcloud compute instances create $INSTANCE<sub>NAME</sub> \
-      &#x2013;zone=$ZONE \
-      &#x2013;image-family=$IMAGE<sub>FAMILY</sub> \
-      &#x2013;image-project=deeplearning-platform-release \
-      &#x2013;maintenance-policy=TERMINATE \
-      &#x2013;accelerator=&ldquo;type=nvidia-tesla-v100,count=1&rdquo; \
-      &#x2013;metadata=&ldquo;install-nvidia-driver=True&rdquo; \
-      &#x2013;preemptible
-    </p>
-    
-    </div>
+    ```
+export IMAGE_FAMILY="pytorch-latest-gpu"
+export ZONE="europe-west4-[abc]"
+export INSTANCE_NAME="my-instance"
+
+gcloud compute instances create $INSTANCE_NAME \
+  --zone=$ZONE \
+  --image-family=$IMAGE_FAMILY \
+  --image-project=deeplearning-platform-release \
+  --maintenance-policy=TERMINATE \
+  --accelerator="type=nvidia-tesla-v100,count=1" \
+  --metadata="install-nvidia-driver=True" \
+  --preemptible
+
+    ```
     
     You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you have enough quota!).
     
-    ![img](/Users/mikevink/Dropbox (1)/org/.attach/4a/e69b5b-f071-4ecf-aed0-fe34ffb41531/_20201224_132535Screenshot 2020-12-24 at 13.25.33.png)
+    ![img](./readme_dia/img9.png)
 
 **remember to stop the instance if you will not use it right away!!!**
 
