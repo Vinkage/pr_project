@@ -94,9 +94,9 @@ gcloud compute instances create $INSTANCE_NAME \
   --preemptible
 ```
     
-    You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you have enough quota!).
+You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you have enough quota!).
     
-    ![img](./readme_dia/img9.png)
+![img](./readme_dia/img9.png)
 
 **remember to stop the instance if you will not use it right away!!!**
 
