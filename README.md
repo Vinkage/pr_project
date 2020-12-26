@@ -10,7 +10,7 @@
     1.  [Windows](#org02a6211)
         1.  [SSH](#org5ebc47d)
             1. [Generating your keypair](#keypair)
-            2. [Adding your keypair to a Google Cloud instance](#adding keypair to instance)
+            2. [Adding your keypair to a Google Cloud instance](#addingkeypairtoinstance)
 3. [Working with your server](#workServer)
     1.  [git](#gitServer)
     2.  [tmux](#org7e8c79b)
@@ -145,7 +145,7 @@ You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you 
 
 #### Adding your public key to your Google Cloud instance
 
-<a id="adding keypair to instance"></a>
+<a id="addingkeypairtoinstance"></a>
 
 1. Go to the google cloud search bar, type: `vm instances`, you should see your created instance you want to connect to.
 
