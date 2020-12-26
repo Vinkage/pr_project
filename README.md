@@ -14,7 +14,9 @@
 3. [Working with your server](#workServer)
     1.  [git](#gitServer)
     2.  [tmux](#org7e8c79b)
-    3.  [Google drive](#orgb74b1e9)
+    3.  [Google drive from commandline](#orgb74b1e9)
+        1.  [Install](#driveInstall)
+        2.  [Usage](#driveUsage)
 
 <a id="org1677977"></a>
 
@@ -203,13 +205,120 @@ After you connect, run commands on your instance using this terminal. When you f
 
 <a id="gitServer"></a>
 
+I assume people know how to use git from the command line, but here are the two most used commands:
+
+1. Clone the code using http, can not upload files larger than 500mb, but that should not be a problem for us.
+
+``` sh
+git clone https://github.com/Vinkage/pr_project
+```
+
+2. Checkout some branch using the branchname.
+
+``` sh
+git checkout [main|mike]
+```
+
+
 ## tmux
 
 <a id="orgb74b1e9"></a>
+
+What is tmux : <https://en.wikipedia.org/wiki/Tmux>
+
+I can recommend using screen or tmux. These protect your jobs, for example if
+you start a job in tmux and disconnect from the server with SSH, you can be sure
+the job will continue inside tmux. Otherwise, disconnecting from the server with
+ssh also stops your job!
+
+To install it type this in the linux server command line:
+
+``` sh
+sudo apt install tmux
+```
+
+I won't go into depth on tmux, but there are only a few commands we need to know
+to use it.
+
+1. To create a named tmux session, use
+
+``` sh
+tmux new -s my-session
+```
+
+you will see a terminal that looks similar to this,
+
+![img](./readme_dia/img15.png)
+
+indicating you are now inside the tmux session. Feel free to run any commands
+here as usual, and finally start your long-running job when you are ready.
+
+2. When you are ready to exit the tmux session press the follow key sequence,
+   `Ctrl-B` then `d`. This is the standard keybinding for detaching from your
+   tmux session. You should now be back in your standard terminal session.
+
+3. Now with your job running in the "background" or in tmux, you can disconnect
+   from the server if you want. **Be careful not to move any files that are
+   being used by your job!!!**
+   
+4. If you want to see how your job is doing at any moment we need to re-enter the tmux session,
+
+``` sh
+tmux attach-session -t my-session
+```
+
+which should take you back to the tmux session.
 
 ## Google Drive from a commandline
 
 
 <a id="orgf22c3ce"></a>
 
+drive command line tool github repo: <https://github.com/odeke-em/drive>
 
+Since we are working with datasets and we need to transfer them to servers, I
+chose to install the google drive command line tool.
+
+It actually works very similar to git, it mounts your google drive disk as a
+directory, and then you can pull and push changes by using commands while inside
+this directory.
+
+### Install 
+
+<a id="driveInstall"></a>
+
+You may need to install the package software-properties-common to use apt-add-repository command.
+
+```sh
+sudo apt-get install software-properties-common dirmngr
+```
+
+After installing software-properties-common, you can run these commands. Updates will be as normal with all debian packages.
+Note: The apt-key command is no longer required on apt 1.1 systems. It's safe to ignore any error presented.
+
+```sh
+sudo apt-add-repository 'deb http://shaggytwodope.github.io/repo ./'
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7086E9CC7EC3233B
+sudo apt-key update
+sudo apt-get update
+sudo apt-get install drive
+```
+
+### Usage
+
+<a id="driveUsage"></a>
+
+1. Enter this to init the google drive, you might be prompted to go to a url and
+   copy paste an authorisation code into the terminal.
+
+``` sh
+drive init ~/gdrive
+cd ~/gdrive
+```
+
+2. Pull the files from your drive to the server using the following snippet, you
+   might need to add some options.
+   
+``` sh
+drive pull
+```
