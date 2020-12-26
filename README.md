@@ -9,6 +9,7 @@
 2.  [Working with a server](#org5e6856d)
     1.  [Windows](#org02a6211)
         1.  [SSH](#org5ebc47d)
+            1. [Generating your keypair](#keypair)
         2.  [tmux](#org7e8c79b)
         3.  [Google cloud](#orgb74b1e9)
     2.  [Mac (assumed everyone has a windows machine)](#orgf22c3ce)
@@ -119,10 +120,27 @@ You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you 
 
 <a id="org5ebc47d"></a>
 
-### SSH
-
+### SSH into your server
 
 <a id="org7e8c79b"></a>
+
+#### Generating you keypair
+
+<a id="keypair"></a>
+
+  1. We are using this guide, <https://cloud.google.com/compute/docs/instances/connecting-advanced#windows-putty>. Download putty here <https://www.putty.org>.
+
+2. First we need to generate the public-private ssh keypair, to do this go to (on windows): *Start* > *Programs * > *PuTTY* > *PuTTYgen*
+
+3. Click `SSH-2 RSA` as the type of key to generate. (leave everything as is)
+
+4. Click Generate and then move the cursor around the blank area of the Key section to generate the random characters that create a unique key. When the key has been completely generated, the information about the new key is displayed in the Key section. (Do not modify the Key fingerprint or the Key comment fields; this can cause your key to no longer be valid.)
+
+5. Save the public key by: 1. Click Save private key. The PuTTYgen Warning panel is displayed. 2. Click Yes to save the private key without a passphrase. 3. Type icat as the name of the private key, and specify the location where you want to save the private key. For example, you can create a directory on your computer called keys to store both the public and private keys. It is recommended that you save your public and private keys in the same location.
+
+6. Click Save.
+
+7. Close the PuTTY Key Generator window.
 
 ### tmux
 
