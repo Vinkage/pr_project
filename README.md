@@ -6,14 +6,15 @@
         1.  [Making account and setting up billing](#orge672a7e):ATTACH:
         2.  [Requesting GPU quota and launching virtual machine](#org224df02):ATTACH:
     2.  [Azure student sponsorship](#org34cc87e)
-2.  [Working with a server](#org5e6856d)
+2.  [Connecting to servers](#org5e6856d)
     1.  [Windows](#org02a6211)
         1.  [SSH](#org5ebc47d)
             1. [Generating your keypair](#keypair)
-        2.  [tmux](#org7e8c79b)
-        3.  [Google cloud](#orgb74b1e9)
-    2.  [Mac (assumed everyone has a windows machine)](#orgf22c3ce)
-
+            2. [Adding your keypair to a Google Cloud instance](#adding keypair to instance)
+3. [Working with your server](#workServer)
+    1.  [git](#gitServer)
+    2.  [tmux](#org7e8c79b)
+    3.  [Google drive](#orgb74b1e9)
 
 <a id="org1677977"></a>
 
@@ -110,7 +111,7 @@ You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you 
 
 <a id="org5e6856d"></a>
 
-# Working with a server
+# Connecting to servers
 
 
 <a id="org02a6211"></a>
@@ -124,13 +125,13 @@ You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you 
 
 <a id="org7e8c79b"></a>
 
-#### Generating you keypair
+#### Generating your keypair
 
 <a id="keypair"></a>
 
   1. We are using this guide, <https://cloud.google.com/compute/docs/instances/connecting-advanced#windows-putty>. Download putty here <https://www.putty.org>.
 
-2. First we need to generate the public-private ssh keypair, to do this go to (on windows): *Start* > *Programs * > *PuTTY* > *PuTTYgen*
+2. First we need to generate the public-private ssh keypair, to do this go to (on windows): *Start* > *Programs* > *PuTTY* > *PuTTYgen*
 
 3. Click `SSH-2 RSA` as the type of key to generate. (leave everything as is)
 
@@ -142,15 +143,45 @@ You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you 
 
 7. Close the PuTTY Key Generator window.
 
-### tmux
+#### Adding your public key to your Google Cloud instance
 
+<a id="adding keypair to instance"></a>
+
+1. Go to the google cloud search bar, type: `vm instances`, you should see your created instance you want to connect to.
+
+![img](./readme_dia/img10.png)
+
+2. Click on the **name** of the instance you created to go to instance details.
+
+![img](./readme_dia/img11.png)
+
+3. Then click the `edit` button. Scroll down to the SSH keys section, then paste
+   the contents of your public ssh key into the box, and click add ssh key. (your public ssh key should be in a .pub file)
+
+![img](./readme_dia/img12.png)
+
+4. Click `save` at the bottom to stop editing.
+
+#### Starting your instance and connecting using PuTTY! (the part where you can prepare to start your job)
+
+1. 
+
+
+# Working with your server
+
+<a id="workServer"></a>
+
+## git
+
+<a id="gitServer"></a>
+
+## tmux
 
 <a id="orgb74b1e9"></a>
 
-### Google cloud
+## Google Drive from a commandline
 
 
 <a id="orgf22c3ce"></a>
 
-## Mac (assumed everyone has a windows machine)
 
