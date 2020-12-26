@@ -164,8 +164,36 @@ You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you 
 
 #### Starting your instance and connecting using PuTTY! (the part where you can prepare to start your job)
 
-1. 
+1. If everything went alright we can now follow this guide: <https://cloud.google.com/compute/docs/instances/connecting-advanced#windows-putty>.
 
+2. Start your virtual machine instance using the play button on the virtual machine page on google cloud. There should now be an external ip-address listed in the row of your instance. We need this to connect.
+
+3. Open PuTTY by launching putty.exe. A connection configuration window opens.
+
+4. In the Host Name field, enter the username associated with the SSH key, and the external IP address of the instance that you want to connect to. Use the following format:
+
+``` sh
+USERNAME@EXTERNAL_IP
+```
+
+Replace the following:
+
+USERNAME: the username of the user connecting to the instance. This must be the username you specified when you created the SSH key.
+(If you don't know your username, it is also at the end of you public SSH key in the .pub file.)
+
+EXTERNAL_IP: the external IP address of the instance that you want to connect to. (The thing we saw when starting the instance.)
+
+![img](./readme_dia/img13.png)
+
+5. In the Category menu, navigate to Connection > SSH > Auth. 
+
+6. In the Private key file for authentication field, browse to the location of your private key file.
+
+![img](./readme_dia/img14.png)
+
+7. Click Open to open a terminal with a connection to your instance.
+
+After you connect, run commands on your instance using this terminal. When you finish, disconnect from the instance by running the exit command.
 
 # Working with your server
 
