@@ -1,0 +1,28 @@
+* Training command and details
+
+The command I used was mostly adapted from the README file in the sean
+directory. The paths to the images and labels were relative paths to the 2000
+training images and labels I randomly (seeded) sampled from the CelebA-HQ
+dataset. As with SEAN these were cropped to 256x256 during training.
+
+#+BEGIN_SRC shell
+python3 train.py --name mike_crop_subset --load_size 256 --crop_size 256 --dataset_mode custom --label_dir path/to/my/train/labels --image_dir path/to/my/train/images --label_nc 19 --no_instance --batchSize 2 --norm_mode clade
+#+END_SRC
+
+The difference with the SEAN command is that I enabled the CLADE norm_mode, which is specific to CLADE without it SPADE resblks are used.
+
+#+BEGIN_SRC python
+# From CLADE/options/base_options.py
+parser.add_argument('--norm_mode', type=str, default='spade', help='[spade | clade]')
+#+END_SRC
+
+More info on the training process is stored in text files in this directory.
+
++ [[file:fid.txt][fid scores]] only contains two lines. Need to find out when the fid is being
+  calculated. The options file mentions only that the fid is calculated every 10 epochs.
++ [[file:iter.txt][iter text]] also only contains two lines. It is the 45 epochs times 2000
+  iterations the model has been trained for.
++ [[file:loss_log.txt][loss log]] contains the loss function value per epoch.
+
+* Inference command and details
+* Results
