@@ -1,10 +1,10 @@
-- [Training command and details](#orgd9e89e1)
-- [Adverserial loss term](#org88f3504)
-  - [Hinge version](#org00f83e4)
-  - [SPADE implementation](#org12be6c7)
+- [Training command and details](#orgbadfe46)
+- [Adverserial loss term](#org9ae6eab)
+  - [Hinge version](#org5d54c19)
+  - [SPADE implementation](#orgd5c0bfa)
 
 
-<a id="orgd9e89e1"></a>
+<a id="orgbadfe46"></a>
 
 # Training command and details
 
@@ -28,7 +28,7 @@ More info on the training process is stored in text files in this directory.
 -   [loss log](loss_log.txt) contains the loss function value per epoch.
 
 
-<a id="org88f3504"></a>
+<a id="org9ae6eab"></a>
 
 # Adverserial loss term
 
@@ -64,16 +64,16 @@ So the general loss form is actually (also in SEAN/SPADE),
 
 \[ \min_{E,G} \max_{D_1 , D_2} \sum_{k=1,2}^{} \mathcal{ L }_{GAN}(E,G, D_{k}) \]
 
-which is the minimax game objective. The objective function \( \mathcal{L}\) is given by,
+which is the minimax game objective. The objective function $ \mathcal{L}$ is given by,
 
 \[ \mathcal{L}_{GAN}(G,D) = \mathbb{E}_{\left( \boldsymbol{s,x}\right)} \left[ \log D(\boldsymbol{s,x}) \right] + \mathbb{E}_{\boldsymbol{s}} \left[ \log(1 - D(\boldsymbol{s} , G(\boldsymbol{s}))) \right] \]
 
-Where \( s\) is the label map, and \( x\) is the image.
+Where $ s$ is the label map, and $ x$ is the image.
 
-Note that \( D\) is a (set of) fully convolutional network(s) with a sigmoidal activation function at the end (only in pix2pix paper, or original gan<sub>mode</sub> loss in SPADE project). This means that the range of \( D\) should be \( \left[ 0,1\right] \). Where *one* means real and *zero* means fake.
+Note that $ D$ is a (set of) fully convolutional network(s) with a sigmoidal activation function at the end (only in pix2pix paper, or original gan<sub>mode</sub> loss in SPADE project). This means that the range of $ D$ should be $ \left[ 0,1\right] $. Where *one* means real and *zero* means fake.
 
 
-<a id="org00f83e4"></a>
+<a id="org5d54c19"></a>
 
 ## Hinge version
 
@@ -84,7 +84,7 @@ Now in later papers (SPADE and its derivatives) a hinge form was used, without a
  &+ \mathbb{E}_{} \left[ \max(0, 1 + D_{k}(\boldsymbol{s,},G(\boldsymbol{s}))) \right] \tag*{\{\} }
 \end{align}
 
-Where again \( s\) is the label map and \( x\) is the real image. You can see that there are two hinge terms, the real and fake discriminator loss.
+Where again $ s$ is the label map and $ x$ is the real image. You can see that there are two hinge terms, the real and fake discriminator loss.
 
 This is equivalent to the following (Zhang et al. 2019: SAGAN):
 
@@ -94,14 +94,14 @@ This is equivalent to the following (Zhang et al. 2019: SAGAN):
 \mathcal{ L }_{G} &= - \mathbb{E}_{\boldsymbol{s} } \left[ D(G(\boldsymbol{s}) , \boldsymbol{s}) \right] \tag*{\{\} }
 \end{align}
 
-Where \( \mathcal{ L }_{G}\) is the generator loss, this is important, because we are training stepwise the generator and discriminator. One step the \(\mathcal{ L }_{D}\) is computed and \( \mathcal{ L }_{G}\) in the other.
+Where $ \mathcal{ L }<sub>G</sub>$ is the generator loss, this is important, because we are training stepwise the generator and discriminator. One step the \(\mathcal{ L }_{D}\) is computed and $ \mathcal{ L }<sub>G</sub>$ in the other.
 
-It can be shown that this equation converges to \(2 \) , and that is equivalent to pushing the generated image to the separating hyperplane, and optimising the hyperplane margins for the discriminator (geometric gan paper).
+It can be shown that this equation converges to $2 $ , and that is equivalent to pushing the generated image to the separating hyperplane, and optimising the hyperplane margins for the discriminator (geometric gan paper).
 
-The intuition for this is that when the probability distribution of the real images and fake images are equivalent, or the reverse KL-divergence \( KL \left[ p_{g} || q_{data}\right]\) is minimised (<sup id="e7b68df19302656fb2b29d281c39ec13"><a href="#miyatoSpectralNormalizationGenerative2018" title="Miyato, Kataoka, Koyama \&amp; Yoshida, Spectral {{Normalization}} for {{Generative Adversarial Networks}}, {arXiv:1802.05957 [cs, stat]}, v(), (2018).">miyatoSpectralNormalizationGenerative2018</a></sup>)
+The intuition for this is that when the probability distribution of the real images and fake images are equivalent, or the reverse KL-divergence $ KL \left[ p<sub>g</sub> || q<sub>data</sub>\right]$ is minimised (<sup id="e7b68df19302656fb2b29d281c39ec13"><a href="#miyatoSpectralNormalizationGenerative2018" title="Miyato, Kataoka, Koyama \&amp; Yoshida, Spectral {{Normalization}} for {{Generative Adversarial Networks}}, {arXiv:1802.05957 [cs, stat]}, v(), (2018).">miyatoSpectralNormalizationGenerative2018</a></sup>)
 
 
-<a id="org12be6c7"></a>
+<a id="orgd5c0bfa"></a>
 
 ## SPADE implementation
 
