@@ -1,3 +1,6 @@
+#+LATEX_CLASS: notes
+
+\chapterstyle{mike-section}
 * Training command and details
 
 The command I used was mostly adapted from the README file in the sean
@@ -23,6 +26,9 @@ More info on the training process is stored in text files in this directory.
 + [[file:iter.txt][iter text]] also only contains two lines. It is the 45 epochs times 2000
   iterations the model has been trained for.
 + [[file:loss_log.txt][loss log]] contains the loss function value per epoch.
+
+** loss log plots
+
 
 
 * Adverserial loss term
@@ -78,25 +84,36 @@ function at the end (only in pix2pix paper, or original gan_mode loss in SPADE
 project). This means that the range of \( D\) should be \( \left[ 0,1\right] \).
 Where /one/ means real and /zero/ means fake.
 
-** Hinge version
+** Hinge version :ATTACH:
+:PROPERTIES:
+:ID:       e165e1c2-8e9a-4632-8752-d824494cab21
+:END:
 
 Now in later papers (SPADE and its derivatives) a hinge form was used, without
 any sigmoid predictions. This is best explained in the SEAN paper,
 
 \begin{align}
-\mathcal{ L }_{GAN} &= \mathbb{E}_{} \left[ \max(0,1 - D_{k}(\boldsymbol{s,x})) \right] \tag*{\{\} }\\
- &+ \mathbb{E}_{} \left[ \max(0, 1 + D_{k}(\boldsymbol{s,},G(\boldsymbol{s}))) \right] \tag*{\{\} }
+\mathcal{ L }_{GAN} &= \mathbb{E}_{} \left[ \max(0,1 - D_{k}(\boldsymbol{s,x})) \right] \tag*{\{D\_real\} }\\
+ &+ \mathbb{E}_{} \left[ \max(0, 1 + D_{k}(\boldsymbol{s,},G(\boldsymbol{s}))) \right] \tag*{\{D\_fake\} }
 \end{align}
 
 Where again \( s\) is the label map and \( x\) is the real image. You can see
-that there are two hinge terms, the real and fake discriminator loss.
+that there are two hinge terms, the real and fake discriminator loss. The curly
+braces on the right gives how the loss log file refers to these terms. It is
+also important to note that these expected values are calculated per mini-batch
+cite:limGeometricGAN2017. Meaning that low batch size would not accurately
+represent the separating hyperplane. But given enough time it still would find
+an optimum.
+
+We also have two-scale discriminators, so the value reported in loss\_log.txt is
+actually the mean of the two
 
 This is equivalent to the following (Zhang et al. 2019: SAGAN):
 
 \begin{align}
-\mathcal{ L }_{D} &= - \mathbb{E}_{(\boldsymbol{s,x})} \left[ \min(0, -1 + D(\boldsymbol{s,x})) \right] \tag*{\{\} }\\
- &- \mathbb{E}_{s} \left[ \min(0, -1 - D(G(\boldsymbol{s}) , \boldsymbol{s})) \right] \tag*{\{\} }\\
-\mathcal{ L }_{G} &= - \mathbb{E}_{\boldsymbol{s} } \left[ D(G(\boldsymbol{s}) , \boldsymbol{s}) \right] \tag*{\{\} }
+\mathcal{ L }_{D} &= - \mathbb{E}_{(\boldsymbol{s,x})} \left[ \min(0, -1 + D(\boldsymbol{s,x})) \right] \tag*{\{D\_real\} }\\
+ &- \mathbb{E}_{s} \left[ \min(0, -1 - D(G(\boldsymbol{s}) , \boldsymbol{s})) \right] \tag*{\{D\_fake\} }\\
+\mathcal{ L }_{G} &= - \mathbb{E}_{\boldsymbol{s} } \left[ D(G(\boldsymbol{s}) , \boldsymbol{s}) \right] \tag*{\{GAN\} }
 \end{align}
 
 Where \( \mathcal{ L }_{G}\) is the generator loss, this is important, because
@@ -110,16 +127,18 @@ hyperplane margins for the discriminator (geometric gan paper).
 
 The intuition for this is that when the probability distribution of the real
 images and fake images are equivalent, or the reverse KL-divergence \( KL \left[ p_{g} || q_{data}\right]\)
-is minimised (cite:miyatoSpectralNormalizationGenerative2018)
+is minimised cite:miyatoSpectralNormalizationGenerative2018. Especially the
+example of learning parallel lines at the end of section 3 of the paper was
+nice. The paper also gives the geometric intuition for the hinge loss
 
-** SPADE implementation
 
-The actual output of a forward pass through the MultiScaleDiscriminator is a
-nested list of dimension, n_D x n_Layers_in_D. The discriminator is actually the
-two times application of a the normal Nlayer patchgan discriminator. It is a
-four layer fully convolutional network. The first time the input is normal, the
-second time the input is downsampled.
 
-This nested list is used in the discriminate method of the pix2pix model class.
+[[attachment:_20210104_131213Screenshot 2021-01-04 at 13.11.45.png]]
 
-This tensor is fed to the divide_pred method of pix2pix to give the predictions to the loss class.
+As you can see the discriminator tries to push away from the hyperplane where \(
+D = 0\),
+and the generator tries to push towards the \( 0\) .
+
+
+bibliographystyle:unsrt
+bibliography:../../../../../../Dropbox/bibliography/references.bib

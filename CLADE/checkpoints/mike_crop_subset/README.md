@@ -1,10 +1,10 @@
-- [Training command and details](#orgbadfe46)
-- [Adverserial loss term](#org9ae6eab)
-  - [Hinge version](#org5d54c19)
-  - [SPADE implementation](#orgd5c0bfa)
+- [Training command and details](#org2eec071)
+- [Adverserial loss term](#orgd6a805d)
+  - [Hinge version](#org09d02a0)
+  - [SPADE implementation](#org68c9d3d)
 
 
-<a id="orgbadfe46"></a>
+<a id="org2eec071"></a>
 
 # Training command and details
 
@@ -28,7 +28,7 @@ More info on the training process is stored in text files in this directory.
 -   [loss log](loss_log.txt) contains the loss function value per epoch.
 
 
-<a id="org9ae6eab"></a>
+<a id="orgd6a805d"></a>
 
 # Adverserial loss term
 
@@ -73,7 +73,7 @@ Where $ s$ is the label map, and $ x$ is the image.
 Note that $ D$ is a (set of) fully convolutional network(s) with a sigmoidal activation function at the end (only in pix2pix paper, or original gan<sub>mode</sub> loss in SPADE project). This means that the range of $ D$ should be $ \left[ 0,1\right] $. Where *one* means real and *zero* means fake.
 
 
-<a id="org5d54c19"></a>
+<a id="org09d02a0"></a>
 
 ## Hinge version
 
@@ -101,7 +101,7 @@ It can be shown that this equation converges to $2 $ , and that is equivalent to
 The intuition for this is that when the probability distribution of the real images and fake images are equivalent, or the reverse KL-divergence $ KL \left[ p<sub>g</sub> || q<sub>data</sub>\right]$ is minimised (<sup id="e7b68df19302656fb2b29d281c39ec13"><a href="#miyatoSpectralNormalizationGenerative2018" title="Miyato, Kataoka, Koyama \&amp; Yoshida, Spectral {{Normalization}} for {{Generative Adversarial Networks}}, {arXiv:1802.05957 [cs, stat]}, v(), (2018).">miyatoSpectralNormalizationGenerative2018</a></sup>)
 
 
-<a id="orgd5c0bfa"></a>
+<a id="org68c9d3d"></a>
 
 ## SPADE implementation
 

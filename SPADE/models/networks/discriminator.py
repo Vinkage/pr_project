@@ -113,6 +113,7 @@ class NLayerDiscriminator(BaseNetwork):
             intermediate_output = submodel(results[-1])
             results.append(intermediate_output)
 
+        # returns a list of one dimensionsal tensors
         get_intermediate_features = not self.opt.no_ganFeat_loss
         if get_intermediate_features:
             return results[1:]

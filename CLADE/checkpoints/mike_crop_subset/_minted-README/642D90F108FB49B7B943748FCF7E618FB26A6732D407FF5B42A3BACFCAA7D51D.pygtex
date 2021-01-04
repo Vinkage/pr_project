@@ -1,0 +1,19 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} From models/networks/discriminator.py}
+\PYG{k}{class} \PYG{n+nc}{MultiscaleDiscriminator}\PYG{p}{(}\PYG{n}{BaseNetwork}\PYG{p}{):}
+    \PYG{n+nd}{@staticmethod}
+    \PYG{k}{def} \PYG{n+nf}{modify\PYGZus{}commandline\PYGZus{}options}\PYG{p}{(}\PYG{n}{parser}\PYG{p}{,} \PYG{n}{is\PYGZus{}train}\PYG{p}{):}
+        \PYG{n}{parser}\PYG{o}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}netD\PYGZus{}subarch\PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{type}\PYG{o}{=}\PYG{n+nb}{str}\PYG{p}{,} \PYG{n}{default}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}n\PYGZus{}layer\PYGZsq{}}\PYG{p}{,}
+                            \PYG{n}{help}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}architecture of each discriminator\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{parser}\PYG{o}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}num\PYGZus{}D\PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{type}\PYG{o}{=}\PYG{n+nb}{int}\PYG{p}{,} \PYG{n}{default}\PYG{o}{=}\PYG{l+m+mi}{2}\PYG{p}{,}
+                            \PYG{n}{help}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}number of discriminators to be used in multiscale\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{opt}\PYG{p}{,} \PYG{n}{\PYGZus{}} \PYG{o}{=} \PYG{n}{parser}\PYG{o}{.}\PYG{n}{parse\PYGZus{}known\PYGZus{}args}\PYG{p}{()}
+
+        \PYG{c+c1}{\PYGZsh{} define properties of each discriminator of the multiscale discriminator}
+        \PYG{n}{subnetD} \PYG{o}{=} \PYG{n}{util}\PYG{o}{.}\PYG{n}{find\PYGZus{}class\PYGZus{}in\PYGZus{}module}\PYG{p}{(}\PYG{n}{opt}\PYG{o}{.}\PYG{n}{netD\PYGZus{}subarch} \PYG{o}{+} \PYG{l+s+s1}{\PYGZsq{}discriminator\PYGZsq{}}\PYG{p}{,}
+                                            \PYG{l+s+s1}{\PYGZsq{}models.networks.discriminator\PYGZsq{}}\PYG{p}{)}
+        \PYG{n}{subnetD}\PYG{o}{.}\PYG{n}{modify\PYGZus{}commandline\PYGZus{}options}\PYG{p}{(}\PYG{n}{parser}\PYG{p}{,} \PYG{n}{is\PYGZus{}train}\PYG{p}{)}
+
+        \PYG{k}{return} \PYG{n}{parser}
+\PYG{c+c1}{\PYGZsh{} [...]}
+\end{Verbatim}
