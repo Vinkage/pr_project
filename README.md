@@ -318,6 +318,7 @@ Make sure linux knows where go is installed ($HOME/go) (make sure you copy it co
 ```
 cat << ! >> ~/.bashrc
 export GOPATH=\$HOME/gopath
+export PATH=$GOPATH:$GOPATH/bin:$PATH
 export GOROOT=\$HOME/go
 export PATH=\$GOROOT:\$GOROOT/bin:\$PATH
 !
