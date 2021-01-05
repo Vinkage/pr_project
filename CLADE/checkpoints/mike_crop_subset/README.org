@@ -1,6 +1,5 @@
 #+LATEX_CLASS: notes
 
-\chapterstyle{mike-section}
 * Training command and details
 
 The command I used was mostly adapted from the README file in the sean
@@ -27,8 +26,37 @@ More info on the training process is stored in text files in this directory.
   iterations the model has been trained for.
 + [[file:loss_log.txt][loss log]] contains the loss function value per epoch.
 
+** Continue training
+
+I continued training using the following command:
+
+#+BEGIN_SRC shell
+python3 train.py --name mike_crop_subset --load_size 256 --crop_size 256 --dataset_mode custom --label_dir path/to/my/train/labels --image_dir path/to/my/train/images --label_nc 19 --no_instance --batchSize 8 --norm_mode clade --tf_log --serial_batches
+#+END_SRC
+
+I installed the following tenserflow version:
+
+#+BEGIN_SRC shell
+pip3 install tensorflow==1.15.0
+#+END_SRC
+
+After that for some reason I still had to replace in the visualisation utility =tf= to =tf.compat.v1=
+
+#+BEGIN_SRC python
+# visualiser.py
+
+# search and replace
+tf
+# to
+tf.compat.v1
+#+END_SRC
+
+When the training was interrupted the out event triggered and the stored iterations were written to a log file.
+
 ** loss log plots
 
+I used the tensorboard log files for this, It should also be able to export the
+relevant plots to publication quality images.
 
 
 * Adverserial loss term

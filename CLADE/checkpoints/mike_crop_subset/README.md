@@ -1,10 +1,9 @@
-- [Training command and details](#org2eec071)
-- [Adverserial loss term](#orgd6a805d)
-  - [Hinge version](#org09d02a0)
-  - [SPADE implementation](#org68c9d3d)
+- [Training command and details](#org03e5b76)
+  - [Continue training](#org786f359)
+  - [loss log plots](#orgece53a8)
 
 
-<a id="org2eec071"></a>
+<a id="org03e5b76"></a>
 
 # Training command and details
 
@@ -28,85 +27,38 @@ More info on the training process is stored in text files in this directory.
 -   [loss log](loss_log.txt) contains the loss function value per epoch.
 
 
-<a id="orgd6a805d"></a>
+<a id="org786f359"></a>
 
-# Adverserial loss term
+## Continue training
 
-The loss function is the same as with the pix2pixHD paper, instead they use a hinge loss form for the generator loss.
+I continued training using the following command:
 
-The general GAN loss function in pix2pixHD:
-
-\[ \min_{G} \max_{D} \mathcal{L}(G, D) \]
-
-we use a multiscale discriminator by default, which you can check in the multiscale discriminator class in SPADE.
-
-```python
-# From models/networks/discriminator.py
-class MultiscaleDiscriminator(BaseNetwork):
-    @staticmethod
-    def modify_commandline_options(parser, is_train):
-        parser.add_argument('--netD_subarch', type=str, default='n_layer',
-                            help='architecture of each discriminator')
-        parser.add_argument('--num_D', type=int, default=2,
-                            help='number of discriminators to be used in multiscale')
-        opt, _ = parser.parse_known_args()
-
-        # define properties of each discriminator of the multiscale discriminator
-        subnetD = util.find_class_in_module(opt.netD_subarch + 'discriminator',
-                                            'models.networks.discriminator')
-        subnetD.modify_commandline_options(parser, is_train)
-
-        return parser
-# [...]
+```shell
+python3 train.py --name mike_crop_subset --load_size 256 --crop_size 256 --dataset_mode custom --label_dir path/to/my/train/labels --image_dir path/to/my/train/images --label_nc 19 --no_instance --batchSize 8 --norm_mode clade --tf_log --serial_batches
 ```
 
-So the general loss form is actually (also in SEAN/SPADE),
+I installed the following tenserflow version:
 
-\[ \min_{E,G} \max_{D_1 , D_2} \sum_{k=1,2}^{} \mathcal{ L }_{GAN}(E,G, D_{k}) \]
+```shell
+pip3 install tensorflow==1.15.0
+```
 
-which is the minimax game objective. The objective function $ \mathcal{L}$ is given by,
+After that for some reason I still had to replace in the visualisation utility `tf` to `tf.compat.v1`
 
-\[ \mathcal{L}_{GAN}(G,D) = \mathbb{E}_{\left( \boldsymbol{s,x}\right)} \left[ \log D(\boldsymbol{s,x}) \right] + \mathbb{E}_{\boldsymbol{s}} \left[ \log(1 - D(\boldsymbol{s} , G(\boldsymbol{s}))) \right] \]
+```python
+# visualiser.py
 
-Where $ s$ is the label map, and $ x$ is the image.
+# search and replace
+tf
+# to
+tf.compat.v1
+```
 
-Note that $ D$ is a (set of) fully convolutional network(s) with a sigmoidal activation function at the end (only in pix2pix paper, or original gan<sub>mode</sub> loss in SPADE project). This means that the range of $ D$ should be $ \left[ 0,1\right] $. Where *one* means real and *zero* means fake.
-
-
-<a id="org09d02a0"></a>
-
-## Hinge version
-
-Now in later papers (SPADE and its derivatives) a hinge form was used, without any sigmoid predictions. This is best explained in the SEAN paper,
-
-\begin{align}
-\mathcal{ L }_{GAN} &= \mathbb{E}_{} \left[ \max(0,1 - D_{k}(\boldsymbol{s,x})) \right] \tag*{\{\} }\\
- &+ \mathbb{E}_{} \left[ \max(0, 1 + D_{k}(\boldsymbol{s,},G(\boldsymbol{s}))) \right] \tag*{\{\} }
-\end{align}
-
-Where again $ s$ is the label map and $ x$ is the real image. You can see that there are two hinge terms, the real and fake discriminator loss.
-
-This is equivalent to the following (Zhang et al. 2019: SAGAN):
-
-\begin{align}
-\mathcal{ L }_{D} &= - \mathbb{E}_{(\boldsymbol{s,x})} \left[ \min(0, -1 + D(\boldsymbol{s,x})) \right] \tag*{\{\} }\\
- &- \mathbb{E}_{s} \left[ \min(0, -1 - D(G(\boldsymbol{s}) , \boldsymbol{s})) \right] \tag*{\{\} }\\
-\mathcal{ L }_{G} &= - \mathbb{E}_{\boldsymbol{s} } \left[ D(G(\boldsymbol{s}) , \boldsymbol{s}) \right] \tag*{\{\} }
-\end{align}
-
-Where $ \mathcal{ L }<sub>G</sub>$ is the generator loss, this is important, because we are training stepwise the generator and discriminator. One step the \(\mathcal{ L }_{D}\) is computed and $ \mathcal{ L }<sub>G</sub>$ in the other.
-
-It can be shown that this equation converges to $2 $ , and that is equivalent to pushing the generated image to the separating hyperplane, and optimising the hyperplane margins for the discriminator (geometric gan paper).
-
-The intuition for this is that when the probability distribution of the real images and fake images are equivalent, or the reverse KL-divergence $ KL \left[ p<sub>g</sub> || q<sub>data</sub>\right]$ is minimised (<sup id="e7b68df19302656fb2b29d281c39ec13"><a href="#miyatoSpectralNormalizationGenerative2018" title="Miyato, Kataoka, Koyama \&amp; Yoshida, Spectral {{Normalization}} for {{Generative Adversarial Networks}}, {arXiv:1802.05957 [cs, stat]}, v(), (2018).">miyatoSpectralNormalizationGenerative2018</a></sup>)
+When the training was interrupted the out event triggered and the stored iterations were written to a log file.
 
 
-<a id="org68c9d3d"></a>
+<a id="orgece53a8"></a>
 
-## SPADE implementation
+## loss log plots
 
-The actual output of a forward pass through the MultiScaleDiscriminator is a nested list of dimension, n<sub>D</sub> x n<sub>Layers</sub><sub>in</sub><sub>D</sub>. The discriminator is actually the two times application of a the normal Nlayer patchgan discriminator. It is a four layer fully convolutional network. The first time the input is normal, the second time the input is downsampled.
-
-This nested list is used in the discriminate method of the pix2pix model class.
-
-This tensor is fed to the divide<sub>pred</sub> method of pix2pix to give the predictions to the loss class.
+I used the tensorboard log files for this, It should also be able to export the relevant plots to publication quality images.
