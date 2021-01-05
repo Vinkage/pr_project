@@ -1,5 +1,7 @@
 #+LATEX_CLASS: notes
 
+\chapterstyle{mike-section}
+
 * Training command and details
 
 The command I used was mostly adapted from the README file in the sean

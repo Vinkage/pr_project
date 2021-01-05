@@ -1,5 +1,10 @@
 \begin{thebibliography}{1}
 
+\bibitem{limGeometricGAN2017}
+Jae~Hyun Lim and Jong~Chul Ye.
+\newblock Geometric {{GAN}}.
+\newblock {\em arXiv:1705.02894 [cond-mat, stat]}, May 2017.
+
 \bibitem{miyatoSpectralNormalizationGenerative2018}
 Takeru Miyato, Toshiki Kataoka, Masanori Koyama, and Yuichi Yoshida.
 \newblock Spectral {{Normalization}} for {{Generative Adversarial Networks}}.
