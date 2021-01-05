@@ -58,7 +58,16 @@ When the training was interrupted the out event triggered and the stored iterati
 ** loss log plots
 
 I used the tensorboard log files for this, It should also be able to export the
-relevant plots to publication quality images.
+relevant plots to publication quality images. You can install tensorboard
+locally and then google a command to open the log files, or quickly and dirtily
+use the command I used:
+
+#+BEGIN_SRC shell
+# tensorboard --logdir=/path/to/log_dir
+tensorboard --logdir=./mike_crop_subset/logs
+
+# Should open a server where you can see the loss over iterations.
+#+END_SRC
 
 
 * Adverserial loss term
@@ -117,6 +126,7 @@ Where /one/ means real and /zero/ means fake.
 ** Hinge version :ATTACH:
 :PROPERTIES:
 :ID:       e165e1c2-8e9a-4632-8752-d824494cab21
+:DIR:      /Users/mikevink/Documents/python/pr_project/CLADE/checkpoints/mike_crop_subset/figs
 :END:
 
 Now in later papers (SPADE and its derivatives) a hinge form was used, without

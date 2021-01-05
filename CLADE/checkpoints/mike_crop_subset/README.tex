@@ -1,4 +1,4 @@
-% Created 2021-01-05 Tue 12:21
+% Created 2021-01-05 Tue 13:11
 % Intended LaTeX compiler: pdflatex
 \documentclass{memoir}
 \input{/Users/mikevink/.data/nvim/vnnv/latex/preamble.tex}
@@ -33,7 +33,7 @@
 \chapterstyle{mike-section}
 
 \chapter{Training command and details}
-\label{sec:org11f4e95}
+\label{sec:org9c41d80}
 
 The command I used was mostly adapted from the README file in the sean
 directory. The paths to the images and labels were relative paths to the 2000
@@ -62,7 +62,7 @@ iterations the model has been trained for.
 \end{itemize}
 
 \section{Continue training}
-\label{sec:org8bd4128}
+\label{sec:org2becb53}
 
 I continued training using the following command:
 
@@ -90,14 +90,23 @@ tf.compat.v1
 When the training was interrupted the out event triggered and the stored iterations were written to a log file.
 
 \section{loss log plots}
-\label{sec:org3a31238}
+\label{sec:orgb0c3c84}
 
 I used the tensorboard log files for this, It should also be able to export the
-relevant plots to publication quality images.
+relevant plots to publication quality images. You can install tensorboard
+locally and then google a command to open the log files, or quickly and dirtily
+use the command I used:
+
+\begin{minted}[breaklines=true,breakanywhere=true]{shell}
+# tensorboard --logdir=/path/to/log_dir
+tensorboard --logdir=./mike_crop_subset/logs
+
+# Should open a server where you can see the loss over iterations.
+\end{minted}
 
 
 \chapter{Adverserial loss term}
-\label{sec:org6b2e8d6}
+\label{sec:orgc1ed30b}
 
 The loss function is the same as with the pix2pixHD paper, instead they use a
 hinge loss form for the generator loss.
@@ -151,7 +160,7 @@ project). This means that the range of \(D\) should be \(\left[ 0,1\right]\).
 Where \emph{one} means real and \emph{zero} means fake.
 
 \section{Hinge version\hfill{}\textsc{ATTACH}}
-\label{sec:org693b1bd}
+\label{sec:orga9fd9a5}
 Now in later papers (SPADE and its derivatives) a hinge form was used, without
 any sigmoid predictions. This is best explained in the SEAN paper,
 
@@ -196,7 +205,9 @@ nice. The paper also gives the geometric intuition for the hinge loss
 
 
 
-\url{\_20210104\_131213Screenshot 2021-01-04 at 13.11.45.png}
+\begin{center}
+\includegraphics[width=.9\linewidth]{/Users/mikevink/Documents/python/pr_project/CLADE/checkpoints/mike_crop_subset/figs/_20210104_131213Screenshot 2021-01-04 at 13.11.45.png}
+\end{center}
 
 As you can see the discriminator tries to push away from the hyperplane where \(D = 0\),
 and the generator tries to push towards the \(0\) .

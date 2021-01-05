@@ -1,9 +1,9 @@
-- [Training command and details](#org03e5b76)
-  - [Continue training](#org786f359)
-  - [loss log plots](#orgece53a8)
+- [Training command and details](#orgd94f98f)
+  - [Continue training](#org65fb83d)
+  - [loss log plots](#org8643a0f)
 
 
-<a id="org03e5b76"></a>
+<a id="orgd94f98f"></a>
 
 # Training command and details
 
@@ -27,7 +27,7 @@ More info on the training process is stored in text files in this directory.
 -   [loss log](loss_log.txt) contains the loss function value per epoch.
 
 
-<a id="org786f359"></a>
+<a id="org65fb83d"></a>
 
 ## Continue training
 
@@ -57,8 +57,15 @@ tf.compat.v1
 When the training was interrupted the out event triggered and the stored iterations were written to a log file.
 
 
-<a id="orgece53a8"></a>
+<a id="org8643a0f"></a>
 
 ## loss log plots
 
-I used the tensorboard log files for this, It should also be able to export the relevant plots to publication quality images.
+I used the tensorboard log files for this, It should also be able to export the relevant plots to publication quality images. You can install tensorboard locally and then google a command to open the log files, or quickly and dirtily use the command I used:
+
+```shell
+# tensorboard --logdir=/path/to/log_dir
+tensorboard --logdir=./mike_crop_subset/logs
+
+# Should open a server where you can see the loss over iterations.
+```
