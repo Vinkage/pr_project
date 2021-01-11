@@ -1,11 +1,4 @@
-/CLADE/data/__pycache__/
-/CLADE/models/__pycache__/
-/CLADE/models/networks/__pycache__/
-/CLADE/models/networks/sync_batchnorm/__pycache__/
-/CLADE/options/__pycache__/
-/CLADE/trainers/__pycache__/
-/CLADE/util/__pycache__/
-/SPADE/options/__pycache__/
-/SPADE/util/__pycache__/
 *.pth
 /**/web/images/*
+/**/__pycache__/
+/**/datasets/*
