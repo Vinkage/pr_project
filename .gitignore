@@ -7,3 +7,4 @@
 /CLADE/util/__pycache__/
 /SPADE/options/__pycache__/
 /SPADE/util/__pycache__/
+*.pth

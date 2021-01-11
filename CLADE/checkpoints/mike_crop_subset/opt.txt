@@ -1,14 +1,14 @@
             D_steps_per_G: 1                             
                  add_dist: False                         
              aspect_ratio: 1.0                           
-                batchSize: 2                             	[default: 1]
+                batchSize: 8                             	[default: 1]
                     beta1: 0.0                           
                     beta2: 0.9                           
       cache_filelist_read: False                         
      cache_filelist_write: False                         
           checkpoints_dir: ./checkpoints                 
    contain_dontcare_label: False                         
-           continue_train: False                         
+           continue_train: True                          	[default: False]
                 crop_size: 256                           
                  dataroot: ./datasets/cityscapes/        
              dataset_mode: custom                        	[default: coco]
@@ -19,12 +19,12 @@
           eval_epoch_freq: 10                            
                  gan_mode: hinge                         
                   gpu_ids: 0                             
-                image_dir: datasets/Celeb_subset/train/images	[default: None]
+                image_dir: /content/drive/MyDrive/prproj/Celeb_subset/train/images	[default: None]
                 init_type: xavier                        
             init_variance: 0.02                          
              instance_dir:                               
                   isTrain: True                          	[default: None]
-                label_dir: datasets/Celeb_subset/train/labels	[default: None]
+                label_dir: /content/drive/MyDrive/prproj/Celeb_subset/train/labels	[default: None]
                  label_nc: 19                            	[default: 13]
               lambda_feat: 10.0                          
                lambda_kld: 0.05                          
@@ -66,8 +66,8 @@
               results_dir: ./results/                    
           save_epoch_freq: 10                            
          save_latest_freq: 5000                          
-           serial_batches: False                         
-                   tf_log: False                         
+           serial_batches: True                          	[default: False]
+                   tf_log: True                          	[default: False]
                train_eval: False                         
                   use_amp: False                         
                   use_vae: False                         
