@@ -3,6 +3,7 @@ Copyright (C) 2019 NVIDIA Corporation.  All rights reserved.
 Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 """
 
+import ipdb
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -123,25 +124,31 @@ class SPADEGenerator(BaseNetwork):
         x = F.interpolate(seg, size=(self.sh, self.sw))
         x = self.fc(x)
 
-        x = self.head_0(x, seg)
+        if self.use_sean:
+            # ipdb.set_trace() # my breakpoint
+            style_codes = self.Zencoder(input=rbg_img, segmap=seg)
+        elif not self.use_sean:
+            style_codes = None
+
+        x = self.head_0(x, seg, style_codes, obj_dic=obj_dic)
 
         x = self.up(x)
-        x = self.G_middle_0(x, seg)
+        x = self.G_middle_0(x, seg, style_codes, obj_dic=obj_dic)
 
         if self.opt.num_upsampling_layers == 'more' or \
            self.opt.num_upsampling_layers == 'most':
             x = self.up(x)
 
-        x = self.G_middle_1(x, seg)
+        x = self.G_middle_1(x, seg, style_codes,  obj_dic=obj_dic)
 
         x = self.up(x)
-        x = self.up_0(x, seg)
+        x = self.up_0(x, seg, style_codes, obj_dic=obj_dic)
         x = self.up(x)
-        x = self.up_1(x, seg)
+        x = self.up_1(x, seg, style_codes, obj_dic=obj_dic)
         x = self.up(x)
-        x = self.up_2(x, seg)
+        x = self.up_2(x, seg, style_codes, obj_dic=obj_dic)
         x = self.up(x)
-        x = self.up_3(x, seg)
+        x = self.up_3(x, seg, style_codes,  obj_dic=obj_dic)
 
         if self.opt.num_upsampling_layers == 'most':
             x = self.up(x)

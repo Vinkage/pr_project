@@ -12,7 +12,11 @@ from util.iter_counter import IterationCounter
 from util.visualizer import Visualizer
 from trainers.pix2pix_trainer import Pix2PixTrainer
 
+# CLADE training
 # %run train.py --name ipdb_test --load_size 256 --crop_size 256 --dataset_mode custom --label_dir ../../Celeb_subset/train/labels --image_dir ../../Celeb_subset/train/images  --label_nc 19 --no_instance --norm_mode clade
+#
+# SEAN training
+# %run train.py --name ipdb_test --load_size 256 --crop_size 256 --dataset_mode custom --label_dir ../../Celeb_subset/train/labels --image_dir ../../Celeb_subset/train/images  --label_nc 19 --no_instance --norm_mode sean --save_epoch_freq 1
 # ipdb.set_trace() # my breakpoint
 
 # parse options

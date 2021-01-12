@@ -3,6 +3,7 @@ Copyright (C) 2019 NVIDIA Corporation.  All rights reserved.
 Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 """
 
+import ipdb
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -28,6 +29,12 @@ class SPADEResnetBlock(nn.Module):
     # that are only used in ACE classes.
     def __init__(self, fin, fout, opt, Block_Name=None, use_rgb=True):
         super().__init__()
+
+        # sean switch
+        if opt.norm_mode != 'sean':
+            self.use_sean = False
+        elif opt.norm_mode == 'sean':
+            self.use_sean = True
 
         # SEAN/ ACE-block specific attributes
         self.use_rgb = use_rgb
