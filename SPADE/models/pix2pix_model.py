@@ -31,8 +31,9 @@ class Pix2PixModel(torch.nn.Module):
             self.criterionFeat = torch.nn.L1Loss()
             if not opt.no_vgg_loss:
                 self.criterionVGG = networks.VGGLoss(self.opt.gpu_ids)
-            if opt.use_vae:
-                self.KLDLoss = networks.KLDLoss()
+            # We are not going to use the vae option
+            # if opt.use_vae:
+            #     self.KLDLoss = networks.KLDLoss()
 
     # Entry point for all calls involving forward pass
     # of deep networks. We used this approach since DataParallel module
@@ -80,8 +81,9 @@ class Pix2PixModel(torch.nn.Module):
     def save(self, epoch):
         util.save_network(self.netG, 'G', epoch, self.opt)
         util.save_network(self.netD, 'D', epoch, self.opt)
-        if self.opt.use_vae:
-            util.save_network(self.netE, 'E', epoch, self.opt)
+        # We are not going to use vae
+        # if self.opt.use_vae:
+        #     util.save_network(self.netE, 'E', epoch, self.opt)
 
     ############################################################################
     # Private helper methods
@@ -96,8 +98,9 @@ class Pix2PixModel(torch.nn.Module):
             netG = util.load_network(netG, 'G', opt.which_epoch, opt)
             if opt.isTrain:
                 netD = util.load_network(netD, 'D', opt.which_epoch, opt)
-            if opt.use_vae:
-                netE = util.load_network(netE, 'E', opt.which_epoch, opt)
+            # we are not going to use vae
+            # if opt.use_vae:
+            #     netE = util.load_network(netE, 'E', opt.which_epoch, opt)
 
         return netG, netD, netE
 
@@ -109,9 +112,10 @@ class Pix2PixModel(torch.nn.Module):
         # move to GPU and change data types
         data['label'] = data['label'].long()
         if self.use_gpu():
-            data['label'] = data['label'].cuda()
-            data['instance'] = data['instance'].cuda()
-            data['image'] = data['image'].cuda()
+            # SEAN adds non-blocking here
+            data['label'] = data['label'].cuda(non_blocking=True)
+            data['instance'] = data['instance'].cuda(non_blocking=True)
+            data['image'] = data['image'].cuda(non_blocking=True)
 
         # create one-hot label map
         label_map = data['label']
@@ -132,7 +136,9 @@ class Pix2PixModel(torch.nn.Module):
     def compute_generator_loss(self, input_semantics, real_image):
         G_losses = {}
 
-        fake_image, KLD_loss = self.generate_fake(
+        # We are not going to use KLD_loss since we don't use the vae option
+        # fake_image, KLD_loss = self.generate_fake(
+        fake_image = self.generate_fake(
             input_semantics, real_image, compute_kld_loss=self.opt.use_vae)
 
         if self.opt.use_vae:
@@ -165,7 +171,8 @@ class Pix2PixModel(torch.nn.Module):
     def compute_discriminator_loss(self, input_semantics, real_image):
         D_losses = {}
         with torch.no_grad():
-            fake_image, _ = self.generate_fake(input_semantics, real_image)
+            # We don't care about the KLD loss return value of generate_fake
+            fake_image = self.generate_fake(input_semantics, real_image)
             fake_image = fake_image.detach()
             fake_image.requires_grad_()
 
@@ -185,19 +192,37 @@ class Pix2PixModel(torch.nn.Module):
         return z, mu, logvar
 
     def generate_fake(self, input_semantics, real_image, compute_kld_loss=False):
-        z = None
-        KLD_loss = None
-        if self.opt.use_vae:
-            z, mu, logvar = self.encode_z(real_image)
-            if compute_kld_loss:
-                KLD_loss = self.KLDLoss(mu, logvar) * self.opt.lambda_kld
+        # z = None
+        # KLD_loss = None
+        # We are not using vae
+        # if self.opt.use_vae:
+        #     z, mu, logvar = self.encode_z(real_image)
+        #     if compute_kld_loss:
+        #         KLD_loss = self.KLDLoss(mu, logvar) * self.opt.lambda_kld
 
-        fake_image = self.netG(input_semantics, z=z)
+        #
+        # SEAN needs both the real image and the semantic map
+        fake_image = self.netG(input_semantics, real_image)
 
-        assert (not compute_kld_loss) or self.opt.use_vae, \
-            "You cannot compute KLD loss if opt.use_vae == False"
+        # assert (not compute_kld_loss) or self.opt.use_vae, \
+        #     "You cannot compute KLD loss if opt.use_vae == False"
 
-        return fake_image, KLD_loss
+        return fake_image
+
+    # SEAN specific methods
+
+    def save_style_codes(self, input_semantics, real_image, obj_dic):
+
+        fake_image = self.netG(input_semantics, real_image, obj_dic=obj_dic)
+
+        return fake_image
+
+
+    def use_style_codes(self, input_semantics, real_image, obj_dic):
+
+        fake_image = self.netG(input_semantics, real_image, obj_dic=obj_dic)
+
+        return fake_image
 
     # Given fake and real image, return the prediction of discriminator
     # for each fake and real image.

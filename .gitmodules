@@ -1,0 +1,3 @@
+[submodule "SPADE/models/networks/Synchronized-BatchNorm-PyTorch"]
+	path = SPADE/models/networks/Synchronized-BatchNorm-PyTorch
+	url = https://github.com/vacancy/Synchronized-BatchNorm-PyTorch

@@ -44,7 +44,8 @@ class BaseOptions():
         parser.add_argument('--dataset_mode', type=str, default='coco')
         parser.add_argument('--serial_batches', action='store_true', help='if true, takes images in order to make batches, otherwise takes them randomly')
         parser.add_argument('--no_flip', action='store_true', help='if specified, do not flip the images for data argumentation')
-        parser.add_argument('--nThreads', default=0, type=int, help='# threads for loading data')
+        # SEAN puts the number of threads at 28 by default, I will do the same for SPADE now
+        parser.add_argument('--nThreads', default=28, type=int, help='# threads for loading data')
         parser.add_argument('--max_dataset_size', type=int, default=sys.maxsize, help='Maximum number of samples allowed per dataset. If the dataset directory contains more than max_dataset_size, only a subset is loaded.')
         parser.add_argument('--load_from_opt_file', action='store_true', help='load the options from checkpoints and use that as default')
         parser.add_argument('--cache_filelist_write', action='store_true', help='saves the current filelist into a text file, so that it loads faster')
@@ -60,6 +61,9 @@ class BaseOptions():
         parser.add_argument('--init_variance', type=float, default=0.02, help='variance of the initialization distribution')
         parser.add_argument('--z_dim', type=int, default=256,
                             help="dimension of the latent z vector")
+        # Norm mode option from clade
+        parser.add_argument('--norm_mode', type=str, default='spade', help='[spade | clade]')
+        parser.add_argument('--add_dist', action='store_true', help='if specified, use additional intra-class positional encoding map')
 
         # for instance-wise features
         parser.add_argument('--no_instance', action='store_true', help='if specified, do *not* add instance map as input')

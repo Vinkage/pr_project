@@ -287,21 +287,48 @@ this directory.
 
 <a id="driveInstall"></a>
 
-You may need to install the package software-properties-common to use apt-add-repository command.
+Assume you start in home directory,
 
-```sh
-sudo apt-get install software-properties-common dirmngr
+Download the go archive:
+
+```
+curl -O https://dl.google.com/go/go1.12.7.linux-amd64.tar.gz
 ```
 
-After installing software-properties-common, you can run these commands. Updates will be as normal with all debian packages.
-Note: The apt-key command is no longer required on apt 1.1 systems. It's safe to ignore any error presented.
+Unzip it:
 
-```sh
-sudo apt-add-repository 'deb http://shaggytwodope.github.io/repo ./'
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 7086E9CC7EC3233B
-sudo apt-key update
-sudo apt-get update
-sudo apt-get install drive
+```
+tar xvf go1.12.7.linux-amd64.tar.gz
+```
+
+Make sure you own it:
+
+```
+sudo chown -R root:root ./go
+```
+
+Make directory where go installs things:
+
+```
+mkdir gopath
+```
+
+Make sure linux knows where go is installed ($HOME/go) (make sure you copy it correct, the arrows are weird):
+
+```
+cat << ! >> ~/.bashrc
+export GOPATH=\$HOME/gopath
+export PATH=$GOPATH:$GOPATH/bin:$PATH
+export GOROOT=\$HOME/go
+export PATH=\$GOROOT:\$GOROOT/bin:\$PATH
+!
+source ~/.bashrc # To reload the settings and get the newly set ones # Or open a fresh terminal
+```
+
+Run this command and wait a while:
+
+```
+go get -u github.com/odeke-em/drive/cmd/drive
 ```
 
 ### Usage

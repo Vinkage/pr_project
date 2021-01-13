@@ -65,9 +65,17 @@ class MultiscaleDiscriminator(BaseNetwork):
 
 # Defines the PatchGAN discriminator with the specified arguments.
 class NLayerDiscriminator(BaseNetwork):
+    #
+    #
+    # SEAN uses 3 layers instead of 4 by default, it also changes the stride
+    # used to a constant 2.
+    #
+    # CLADE uses the exact same as SPADE.
+    #
+    # I choose here to use the simpler SEAN discriminator.
     @staticmethod
     def modify_commandline_options(parser, is_train):
-        parser.add_argument('--n_layers_D', type=int, default=4,
+        parser.add_argument('--n_layers_D', type=int, default=3,
                             help='# layers in each discriminator')
         return parser
 
@@ -87,7 +95,12 @@ class NLayerDiscriminator(BaseNetwork):
         for n in range(1, opt.n_layers_D):
             nf_prev = nf
             nf = min(nf * 2, 512)
-            stride = 1 if n == opt.n_layers_D - 1 else 2
+            #
+            # This line is not present in SEAN.
+            #
+            # Instead stride = 2
+            # stride = 1 if n == opt.n_layers_D - 1 else 2
+            stride = 2
             sequence += [[norm_layer(nn.Conv2d(nf_prev, nf, kernel_size=kw,
                                                stride=stride, padding=padw)),
                           nn.LeakyReLU(0.2, False)
@@ -113,6 +126,7 @@ class NLayerDiscriminator(BaseNetwork):
             intermediate_output = submodel(results[-1])
             results.append(intermediate_output)
 
+        # returns a list of one dimensionsal tensors
         get_intermediate_features = not self.opt.no_ganFeat_loss
         if get_intermediate_features:
             return results[1:]

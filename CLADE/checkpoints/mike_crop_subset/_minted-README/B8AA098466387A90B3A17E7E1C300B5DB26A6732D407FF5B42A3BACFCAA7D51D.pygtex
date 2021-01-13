@@ -1,0 +1,4 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+\PYG{c+c1}{\PYGZsh{} From CLADE/options/base\PYGZus{}options.py}
+\PYG{n}{parser}\PYG{o}{.}\PYG{n}{add\PYGZus{}argument}\PYG{p}{(}\PYG{l+s+s1}{\PYGZsq{}\PYGZhy{}\PYGZhy{}norm\PYGZus{}mode\PYGZsq{}}\PYG{p}{,} \PYG{n+nb}{type}\PYG{o}{=}\PYG{n+nb}{str}\PYG{p}{,} \PYG{n}{default}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}spade\PYGZsq{}}\PYG{p}{,} \PYG{n}{help}\PYG{o}{=}\PYG{l+s+s1}{\PYGZsq{}[spade | clade]\PYGZsq{}}\PYG{p}{)}
+\end{Verbatim}

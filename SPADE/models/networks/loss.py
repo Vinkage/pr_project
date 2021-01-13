@@ -86,13 +86,29 @@ class GANLoss(nn.Module):
         # a tensor, but list of tensors in case of multiscale discriminator
         if isinstance(input, list):
             loss = 0
+            # What are the dimensions of pred_i?
+            # It is the two dimensional output of the discriminator network
+            #
+            # It is produced by this convolutional filter:
+            #
+            # sequence += [[nn.Conv2d(nf, 1, kernel_size=kw, stride=1, padding=padw)]]
+            #
+            # where kw = 4, and padw = ceil((4-1)/2) = ceil(1.5) = 2
             for pred_i in input:
                 if isinstance(pred_i, list):
                     pred_i = pred_i[-1]
                 loss_tensor = self.loss(pred_i, target_is_real, for_discriminator)
                 bs = 1 if len(loss_tensor.size()) == 0 else loss_tensor.size(0)
+                # View
+                #   library: "give me a tensor that has these many rows and you compute
+                #   the appropriate number of columns that is necessary to make this happen".
+                #
+                # Mean dim=1
+                #   gives number of means equal to the columns
                 new_loss = torch.mean(loss_tensor.view(bs, -1), dim=1)
                 loss += new_loss
+            # It looks like the mean loss over the detail scales are returned.
+            # What is the form of the loss?
             return loss / len(input)
         else:
             return self.loss(input, target_is_real, for_discriminator)

@@ -3,6 +3,7 @@ Copyright (C) 2019 NVIDIA Corporation.  All rights reserved.
 Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 """
 
+import ipdb
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -10,7 +11,9 @@ from models.networks.base_network import BaseNetwork
 from models.networks.normalization import get_nonspade_norm_layer
 from models.networks.architecture import ResnetBlock as ResnetBlock
 from models.networks.architecture import SPADEResnetBlock as SPADEResnetBlock
-
+#
+# SEAN imports the style encoder here
+from models.networks.architecture import Zencoder
 
 class SPADEGenerator(BaseNetwork):
     @staticmethod
@@ -25,32 +28,63 @@ class SPADEGenerator(BaseNetwork):
     def __init__(self, opt):
         super().__init__()
         self.opt = opt
+        # Does the forward pass use sean or not?
+        if opt.norm_mode == 'sean':
+            self.use_sean = True
+        else:
+            self.use_sean = False
         nf = opt.ngf
 
         self.sw, self.sh = self.compute_latent_vector_size(opt)
 
-        if opt.use_vae:
-            # In case of VAE, we will sample from random z vector
-            self.fc = nn.Linear(opt.z_dim, 16 * nf * self.sw * self.sh)
-        else:
-            # Otherwise, we make the network deterministic by starting with
-            # downsampled segmentation map instead of random z
+        # We are not going to use the variational encoding in our project.
+        # if opt.use_vae:
+        #     # In case of VAE, we will sample from random z vector
+        #     self.fc = nn.Linear(opt.z_dim, 16 * nf * self.sw * self.sh)
+        # else:
+        #     # Otherwise, we make the network deterministic by starting with
+        #     # downsampled segmentation map instead of random z
+
+        # We don't want to use the style encoder when we are using CLADE or SPADE,
+        # that's why we need this if statement.
+        if opt.norm_mode != 'sean':
             self.fc = nn.Conv2d(self.opt.semantic_nc, 16 * nf, 3, padding=1)
 
-        self.head_0 = SPADEResnetBlock(16 * nf, 16 * nf, opt)
+            self.head_0 = SPADEResnetBlock(16 * nf, 16 * nf, opt)
 
-        self.G_middle_0 = SPADEResnetBlock(16 * nf, 16 * nf, opt)
-        self.G_middle_1 = SPADEResnetBlock(16 * nf, 16 * nf, opt)
+            self.G_middle_0 = SPADEResnetBlock(16 * nf, 16 * nf, opt)
+            self.G_middle_1 = SPADEResnetBlock(16 * nf, 16 * nf, opt)
 
-        self.up_0 = SPADEResnetBlock(16 * nf, 8 * nf, opt)
-        self.up_1 = SPADEResnetBlock(8 * nf, 4 * nf, opt)
-        self.up_2 = SPADEResnetBlock(4 * nf, 2 * nf, opt)
-        self.up_3 = SPADEResnetBlock(2 * nf, 1 * nf, opt)
+            self.up_0 = SPADEResnetBlock(16 * nf, 8 * nf, opt)
+            self.up_1 = SPADEResnetBlock(8 * nf, 4 * nf, opt)
+            self.up_2 = SPADEResnetBlock(4 * nf, 2 * nf, opt)
+            self.up_3 = SPADEResnetBlock(2 * nf, 1 * nf, opt)
 
-        final_nc = nf
+            final_nc = nf
+        elif opt.norm_mode == 'sean':
+            self.Zencoder = Zencoder(3, 512)
+
+
+            self.fc = nn.Conv2d(self.opt.semantic_nc, 16 * nf, 3, padding=1)
+
+            self.head_0 = SPADEResnetBlock(16 * nf, 16 * nf, opt, Block_Name='head_0')
+
+            self.G_middle_0 = SPADEResnetBlock(16 * nf, 16 * nf, opt, Block_Name='G_middle_0')
+            self.G_middle_1 = SPADEResnetBlock(16 * nf, 16 * nf, opt, Block_Name='G_middle_1')
+
+            self.up_0 = SPADEResnetBlock(16 * nf, 8 * nf, opt, Block_Name='up_0')
+            self.up_1 = SPADEResnetBlock(8 * nf, 4 * nf, opt, Block_Name='up_1')
+            self.up_2 = SPADEResnetBlock(4 * nf, 2 * nf, opt, Block_Name='up_2')
+            self.up_3 = SPADEResnetBlock(2 * nf, 1 * nf, opt, Block_Name='up_3', use_rgb=False)
+
+            final_nc = nf
 
         if opt.num_upsampling_layers == 'most':
-            self.up_4 = SPADEResnetBlock(1 * nf, nf // 2, opt)
+            if opt.norm_mode != 'sean':
+                self.up_4 = SPADEResnetBlock(1 * nf, nf // 2, opt)
+            elif opt.norm_mode == 'sean':
+                self.up_4 = SPADEResnetBlock(1 * nf, nf // 2, opt, Block_Name='up_4')
+
             final_nc = nf // 2
 
         self.conv_img = nn.Conv2d(final_nc, 3, 3, padding=1)
@@ -73,40 +107,48 @@ class SPADEGenerator(BaseNetwork):
 
         return sw, sh
 
-    def forward(self, input, z=None):
+    def forward(self, input, rbg_img=None, obj_dic=None, z=None):
         seg = input
 
-        if self.opt.use_vae:
-            # we sample z from unit normal and reshape the tensor
-            if z is None:
-                z = torch.randn(input.size(0), self.opt.z_dim,
-                                dtype=torch.float32, device=input.get_device())
-            x = self.fc(z)
-            x = x.view(-1, 16 * self.opt.ngf, self.sh, self.sw)
-        else:
+        # we are not going to use vae
+        #
+        # if self.opt.use_vae:
+        #     # we sample z from unit normal and reshape the tensor
+        #     if z is None:
+        #         z = torch.randn(input.size(0), self.opt.z_dim,
+        #                         dtype=torch.float32, device=input.get_device())
+        #     x = self.fc(z)
+        #     x = x.view(-1, 16 * self.opt.ngf, self.sh, self.sw)
+        # else:
             # we downsample segmap and run convolution
-            x = F.interpolate(seg, size=(self.sh, self.sw))
-            x = self.fc(x)
+        x = F.interpolate(seg, size=(self.sh, self.sw))
+        x = self.fc(x)
 
-        x = self.head_0(x, seg)
+        if self.use_sean:
+            # ipdb.set_trace() # my breakpoint
+            style_codes = self.Zencoder(input=rbg_img, segmap=seg)
+        elif not self.use_sean:
+            style_codes = None
+
+        x = self.head_0(x, seg, style_codes, obj_dic=obj_dic)
 
         x = self.up(x)
-        x = self.G_middle_0(x, seg)
+        x = self.G_middle_0(x, seg, style_codes, obj_dic=obj_dic)
 
         if self.opt.num_upsampling_layers == 'more' or \
            self.opt.num_upsampling_layers == 'most':
             x = self.up(x)
 
-        x = self.G_middle_1(x, seg)
+        x = self.G_middle_1(x, seg, style_codes,  obj_dic=obj_dic)
 
         x = self.up(x)
-        x = self.up_0(x, seg)
+        x = self.up_0(x, seg, style_codes, obj_dic=obj_dic)
         x = self.up(x)
-        x = self.up_1(x, seg)
+        x = self.up_1(x, seg, style_codes, obj_dic=obj_dic)
         x = self.up(x)
-        x = self.up_2(x, seg)
+        x = self.up_2(x, seg, style_codes, obj_dic=obj_dic)
         x = self.up(x)
-        x = self.up_3(x, seg)
+        x = self.up_3(x, seg, style_codes,  obj_dic=obj_dic)
 
         if self.opt.num_upsampling_layers == 'most':
             x = self.up(x)

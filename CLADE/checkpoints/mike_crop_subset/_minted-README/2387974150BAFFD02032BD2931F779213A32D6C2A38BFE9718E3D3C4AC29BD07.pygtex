@@ -1,0 +1,3 @@
+\begin{Verbatim}[commandchars=\\\{\}]
+python3 train.py \PYGZhy{}\PYGZhy{}name mike\PYGZus{}crop\PYGZus{}subset \PYGZhy{}\PYGZhy{}load\PYGZus{}size \PYG{l+m}{256} \PYGZhy{}\PYGZhy{}crop\PYGZus{}size \PYG{l+m}{256} \PYGZhy{}\PYGZhy{}dataset\PYGZus{}mode custom \PYGZhy{}\PYGZhy{}label\PYGZus{}dir path/to/my/train/labels \PYGZhy{}\PYGZhy{}image\PYGZus{}dir path/to/my/train/images \PYGZhy{}\PYGZhy{}label\PYGZus{}nc \PYG{l+m}{19} \PYGZhy{}\PYGZhy{}no\PYGZus{}instance \PYGZhy{}\PYGZhy{}batchSize \PYG{l+m}{2} \PYGZhy{}\PYGZhy{}norm\PYGZus{}mode clade
+\end{Verbatim}
