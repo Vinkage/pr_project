@@ -55,7 +55,9 @@ class Pix2PixModel(torch.nn.Module):
             return mu, logvar
         elif mode == 'inference':
             with torch.no_grad():
-                fake_image, _ = self.generate_fake(input_semantics, real_image)
+                # fake_image = self.generate_fake(input_semantics, real_image)
+                obj_dic = data['path']
+                fake_image = self.save_style_codes(input_semantics, real_image, obj_dic)
             return fake_image
         else:
             raise ValueError("|mode| is invalid")
