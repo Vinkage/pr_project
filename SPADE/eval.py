@@ -30,7 +30,7 @@ parser.add_argument('--name', type=str,
                     help='an integer for the accumulator')
 parser.add_argument('--dataset_path', type=str,
                     help='sum the integers (default: find the max)')
-parser.add_argument('--root_path', type=str, default='/',
+parser.add_argument('--root_path', type=str, default='.',
                     help='Root path of config files')
 
 args = parser.parse_args() # %run eval.py
