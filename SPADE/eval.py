@@ -30,10 +30,12 @@ parser.add_argument('--name', type=str,
                     help='an integer for the accumulator')
 parser.add_argument('--dataset_path', type=str,
                     help='sum the integers (default: find the max)')
+parser.add_argument('--root_path', type=str, default='/',
+                    help='Root path of config files')
 
 args = parser.parse_args() # %run eval.py
 print(vars(args))
-
+os.chdir(args.root_path)
 
 def resize_images_and_save_statistics(grid_experiment = None, save_path = None):
     if grid_experiment is not None:
