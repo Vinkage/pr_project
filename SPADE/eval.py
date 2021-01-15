@@ -26,15 +26,19 @@ from test import do_test
 
 parser = argparse.ArgumentParser(description='Give name and dataset path')
 
+npz_path_default = 'FID_stats.npz'
 parser.add_argument('--name', type=str,
                     help='an integer for the accumulator')
 parser.add_argument('--dataset_path', type=str,
                     help='sum the integers (default: find the max)')
-parser.add_argument('--root_path', type=str, default='.',
+parser.add_argument('--root_path', type=str, default='/',
                     help='Root path of config files')
+parser.add_argument('--npz_path', type=str, default=npz_path_default, 
+                    help='NPZ file path')
 
 args = parser.parse_args() # %run eval.py
 print(vars(args))
+
 os.chdir(args.root_path)
 
 def resize_images_and_save_statistics(grid_experiment = None, save_path = None):
@@ -269,9 +273,12 @@ Grid = grid_experiment(args.name, args.dataset_path)
 # Check if the FID statistics were already calculated, you can re-use FID_stats
 # from other grid experiments if they use the same dataset,
 #
-# but as you see then you need to copy them over to the experiment directory.
-if not (Grid.exp_dir / 'FID_stats.npz').exists():
+# but as you see then you need to copy them over to the experiment directory.  
+
+if not (Grid.exp_dir / npz_path_default).exists():
     resize_images_and_save_statistics(grid_experiment = Grid)
+elif args.npz_path is not npz_path_default and args.npz_path.exists():
+    print("FID stats given in args, they are calculated before.")
 else:
     print("FID stats were calculated before.")
 
