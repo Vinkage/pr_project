@@ -39,7 +39,7 @@ parser.add_argument('--npz_path', type=str, default=npz_path_default,
 args = parser.parse_args() # %run eval.py
 print(vars(args))
 
-os.chdir(args.root_path)
+# os.chdir(args.root_path)
 
 def resize_images_and_save_statistics(grid_experiment = None, save_path = None):
     if grid_experiment is not None:
@@ -247,10 +247,10 @@ class grid_experiment():
 
 
 
-with open("train_defaults.json", "r") as d:
+with open(args.root_path + "train_defaults.json", "r") as d:
     train_defaults = json.load(d)
 
-with open("test_defaults.json", "r") as d:
+with open(args.root_path + "test_defaults.json", "r") as d:
     test_defaults = json.load(d)
 
 # loads dictionary with following structure
@@ -262,7 +262,7 @@ with open("test_defaults.json", "r") as d:
 #
 # The search name is used to combine with the experiment name!
 # This will be the name of you actual directory
-with open("searches.json", "r") as g:
+with open(args.root_path + "searches.json", "r") as g:
     searches = json.load(g)
 
 Grid = grid_experiment(args.name, args.dataset_path)
@@ -275,10 +275,13 @@ Grid = grid_experiment(args.name, args.dataset_path)
 #
 # but as you see then you need to copy them over to the experiment directory.  
 
-if not (Grid.exp_dir / npz_path_default).exists():
-    resize_images_and_save_statistics(grid_experiment = Grid)
-elif args.npz_path is not npz_path_default and args.npz_path.exists():
+print("path: ", args.npz_path)
+if args.npz_path is not npz_path_default and Path(args.npz_path).exists():
     print("FID stats given in args, they are calculated before.")
+    if not Path(Grid.exp_dir).exists():
+        os.mkdir(Grid.exp_dir)
+elif not Path(Grid.exp_dir / npz_path_default).exists():
+    resize_images_and_save_statistics(grid_experiment = Grid)
 else:
     print("FID stats were calculated before.")
 

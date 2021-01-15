@@ -19,7 +19,7 @@ from util.util import tensor2im, tensor2label
 # parse options
 # opt = TrainOptions().parse()
 
-def do_train(ops):
+def do_train(opt):
     # print options to help debugging
     print(' '.join(sys.argv))
 
@@ -54,7 +54,7 @@ def do_train(ops):
         opt.no_flip = original_flip
         # process for calculate FID scores
         from inception import InceptionV3
-        from fid_score import *
+        from fid_score import calculate_fid_given_paths
         import pathlib
         # define the inceptionV3
         block_idx = InceptionV3.BLOCK_INDEX_BY_DIM[opt.eval_dims]

@@ -1,8 +1,22 @@
+<<<<<<< HEAD
+/CLADE/data/__pycache__/
+/CLADE/models/__pycache__/
+/CLADE/models/networks/__pycache__/
+/CLADE/models/networks/sync_batchnorm/__pycache__/
+/CLADE/options/__pycache__/
+/CLADE/trainers/__pycache__/
+/CLADE/util/__pycache__/
+/Datasets/
+=======
 *.pth
 /**/web/images/*
 /**/__pycache__/
 /**/datasets/*
+<<<<<<< HEAD
+>>>>>>> mike
+=======
 /.direnv/
 /.envrc
 /Pipfile
 .DS_store
+>>>>>>> main
