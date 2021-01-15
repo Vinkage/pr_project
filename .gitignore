@@ -12,4 +12,11 @@
 /**/web/images/*
 /**/__pycache__/
 /**/datasets/*
+<<<<<<< HEAD
 >>>>>>> mike
+=======
+/.direnv/
+/.envrc
+/Pipfile
+.DS_store
+>>>>>>> main

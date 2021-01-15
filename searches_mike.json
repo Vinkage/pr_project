@@ -1,0 +1,5 @@
+{"spade_hinge_loss_halfdecay":
+ {"gan_mode": "hinge", "norm_mode": "spade", "niter": 25, "niter_decay": 25, "continue_train": false, "batchSize": 0},
+ "clade_hinge_loss_halfdecay":
+ {"gan_mode": "hinge", "norm_mode": "clade", "niter": 25, "niter_decay": 25, "continue_train": false, "batchSize": 0}
+}

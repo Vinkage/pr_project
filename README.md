@@ -87,10 +87,12 @@ this is the important screen, fill in the number of GPUs you want, fill in a req
 export IMAGE_FAMILY="pytorch-latest-gpu"
 export ZONE="europe-west4-[abc]"
 export INSTANCE_NAME="my-instance"
+export BOOT_DISK_SIZE="100GB"
 
 gcloud compute instances create $INSTANCE_NAME \
   --zone=$ZONE \
   --image-family=$IMAGE_FAMILY \
+  --boot-disk-size=$BOOT_DISK_SIZE \
   --image-project=deeplearning-platform-release \
   --maintenance-policy=TERMINATE \
   --accelerator="type=nvidia-tesla-v100,count=1" \

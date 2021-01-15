@@ -1,0 +1,5 @@
+{"clade_hinge_loss_nodecay":
+ {"gan_mode": "hinge", "norm_mode": "clade", "niter": 50, "niter_decay": 0, "continue_train": false, "batchSize": 0},
+ "clade_ls_loss_nodecay":
+ {"gan_mode": "ls", "norm_mode": "clade", "niter": 50, "niter_decay": 0, "continue_train": false, "batchSize": 0}
+}

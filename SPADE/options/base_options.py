@@ -62,7 +62,7 @@ class BaseOptions():
         parser.add_argument('--z_dim', type=int, default=256,
                             help="dimension of the latent z vector")
         # Norm mode option from clade
-        parser.add_argument('--norm_mode', type=str, default='spade', help='[spade | clade]')
+        parser.add_argument('--norm_mode', type=str, default='spade', help='[spade | clade | sean]')
         parser.add_argument('--add_dist', action='store_true', help='if specified, use additional intra-class positional encoding map')
 
         # for instance-wise features

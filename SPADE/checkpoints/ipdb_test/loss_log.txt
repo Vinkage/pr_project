@@ -73,3 +73,10 @@
 ================ Training Loss (Tue Jan 12 16:32:21 2021) ================
 (epoch: 1, iters: 100, time: 1.245) GAN: 0.202 GAN_Feat: 4.813 VGG: 8.791 D_Fake: 0.822 D_real: 1.090 
 (epoch: 1, iters: 200, time: 1.288) GAN: 0.628 GAN_Feat: 4.879 VGG: 8.062 D_Fake: 0.673 D_real: 1.127 
+================ Training Loss (Wed Jan 13 13:33:07 2021) ================
+(epoch: 1, iters: 100, time: 0.261) GAN: 0.221 GAN_Feat: 7.110 VGG: 9.455 D_Fake: 0.874 D_real: 0.449 
+(epoch: 1, iters: 200, time: 0.262) GAN: 0.585 GAN_Feat: 8.939 VGG: 9.309 D_Fake: 0.861 D_real: 0.400 
+(epoch: 1, iters: 300, time: 0.266) GAN: 1.071 GAN_Feat: 7.092 VGG: 7.531 D_Fake: 0.505 D_real: 0.639 
+(epoch: 1, iters: 400, time: 0.272) GAN: 0.780 GAN_Feat: 7.910 VGG: 8.755 D_Fake: 0.334 D_real: 1.424 
+================ Training Loss (Wed Jan 13 13:53:40 2021) ================
+================ Training Loss (Wed Jan 13 22:20:14 2021) ================

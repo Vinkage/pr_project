@@ -1,0 +1,13 @@
+{"spade_hinge_loss_nodecay":
+ {"gan_mode": "hinge", "norm_mode": "spade", "niter": 50, "niter_decay": 0, "continue_train": false},
+ "spade_ls_loss_nodecay":
+ {"gan_mode": "ls", "norm_mode": "spade", "niter": 50, "niter_decay": 0, "continue_train": false},
+ "clade_hinge_loss_nodecay":
+ {"gan_mode": "hinge", "norm_mode": "clade", "niter": 50, "niter_decay": 0, "continue_train": false},
+ "clade_ls_loss_nodecay":
+ {"gan_mode": "ls", "norm_mode": "clade", "niter": 50, "niter_decay": 0, "continue_train": false},
+ "spade_hinge_loss_halfdecay":
+ {"gan_mode": "hinge", "norm_mode": "spade", "niter": 25, "niter_decay": 25, "continue_train": false},
+ "clade_hinge_loss_halfdecay":
+ {"gan_mode": "hinge", "norm_mode": "clade", "niter": 25, "niter_decay": 25, "continue_train": false},
+}

@@ -3,3 +3,7 @@ torchvision
 dominate>=2.3.1
 dill
 scikit-image
+pytorch_fid
+ipdb
+tensorflow==1.15.0
+scipy==1.2.0
