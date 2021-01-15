@@ -1,0 +1,3 @@
+{"sean_recommended":
+ {"gan_mode": "hinge", "norm_mode": "sean", "niter": 50, "niter_decay": 0, "continue_train": false, "batchSize": 0}
+}
