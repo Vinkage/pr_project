@@ -1,7 +1,5 @@
-{"search1":
- {"gan_mode": "hinge", "norm_mode": "spade", "niter": 1, "niter_decay": 0},
- "search2":
- {"gan_mode": "ls", "norm_mode": "spade", "niter": 1, "niter_decay": 0},
- "search3":
- {"gan_mode": "original", "norm_mode": "spade", "niter": 1, "niter_decay": 0}
+{"spade_hinge_loss_nodecay":
+ {"gan_mode": "hinge", "norm_mode": "spade", "niter": 50, "niter_decay": 0, "continue_train": false, "batchSize": 0},
+ "spade_ls_loss_nodecay":
+ {"gan_mode": "ls", "norm_mode": "spade", "niter": 50, "niter_decay": 0, "continue_train": false, "batchSize": 0}
 }
