@@ -5,7 +5,7 @@ Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses
 
 import os
 from collections import OrderedDict
-import ipdb
+# import ipdb
 
 import data
 from options.test_options import TestOptions
@@ -22,7 +22,7 @@ from util import html
 # %run test.py --name mock_clade --load_size 256 --crop_size 256 --dataset_mode custom --label_dir ../../mock_data/train/labels --image_dir ../../mock_data/train/images  --label_nc 19 --no_instance --norm_mode clade
 # SEAN test
 # %run test.py --name mock_sean --load_size 256 --crop_size 256 --dataset_mode custom --label_dir ../../mock_data/train/labels --image_dir ../../mock_data/train/images  --label_nc 19 --no_instance --norm_mode sean
-ipdb.set_trace()
+# ipdb.set_trace()
 
 def do_test(opt):
     dataloader = data.create_dataloader(opt)

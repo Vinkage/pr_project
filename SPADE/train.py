@@ -4,7 +4,7 @@ Licensed under the CC BY-NC-SA 4.0 license (https://creativecommons.org/licenses
 """
 
 import sys
-import ipdb
+# import ipdb
 from collections import OrderedDict
 from options.train_options import TrainOptions
 import data
@@ -28,7 +28,7 @@ from trainers.pix2pix_trainer import Pix2PixTrainer
 # %run train.py --name mock_sean --load_size 256 --crop_size 256 --dataset_mode custom --label_dir ../../mock_data/train/labels --image_dir ../../mock_data/train/images  --label_nc 19 --no_instance --norm_mode sean --save_epoch_freq 1 --niter 1
 
 # parse options
-ipdb.set_trace()
+# ipdb.set_trace()
 # opt = TrainOptions().parse()
 
 # print options to help debugging

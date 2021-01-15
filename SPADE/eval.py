@@ -1,4 +1,4 @@
-import ipdb
+# import ipdb
 import subprocess
 import json
 import argparse
@@ -205,7 +205,7 @@ class grid_experiment():
         return {"image_dir": str(images_path),  "label_dir": str(labels_path)}
 
     def dump_current_metrics(self):
-        ipdb.set_trace()
+        # ipdb.set_trace()
         if self.current_metrics == False:
             raise "no metrics to dump"
 
