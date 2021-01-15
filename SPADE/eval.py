@@ -298,7 +298,8 @@ for search in searches.keys():
     # build the stuff we give to do_test
     test_search = {**test_defaults,
                    **{'name': search_name},
-                   **Grid.give_dataset_paths(test=True)
+                   **Grid.give_dataset_paths(test=True),
+                   **{'norm_mode': train_search["norm_mode"]}
                    }
 
     # Inference
