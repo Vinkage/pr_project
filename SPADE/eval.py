@@ -22,7 +22,7 @@ from train import do_train
 from test import do_test
 
 # mock training and testing
-# %run eval.py --name mock_gridsearch --dataset ../../mock_data
+# %run eval.py --name mock_gridsearch --dataset ../mock_data
 
 parser = argparse.ArgumentParser(description='Give name and dataset path')
 
