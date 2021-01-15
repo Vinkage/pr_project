@@ -2,3 +2,6 @@
 /**/web/images/*
 /**/__pycache__/
 /**/datasets/*
+/.direnv/
+/.envrc
+/Pipfile
