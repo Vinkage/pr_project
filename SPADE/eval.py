@@ -55,7 +55,12 @@ def resize_images_and_save_statistics(grid_experiment = None, save_path = None):
 
         # Resize loop which saves dataset in tmpdir
         image_list = os.listdir(imgs)
+        i = 0
         for image in image_list:
+            i += 1
+            if i % 100 == 0:
+                print(i, "out of ", len(image_list))
+            
             # ipdb.set_trace()
             sk_img = skimage.io.imread(Path(imgs) / image)
             sk_img = skimage.transform.resize(sk_img,
