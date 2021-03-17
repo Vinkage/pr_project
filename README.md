@@ -1,3 +1,6 @@
+# Paper comparing the state-of-the-art GAN models
+
+[Exploration of the synthesis image generation taskby applying state-of-the-art network architectureswith different parameters](./readme_dia/paper.pdf)
 
 # Table of Contents
 
@@ -43,7 +46,7 @@
 3.  In the bottom right you should see an option to upgrade your account to a paid account, we need this because otherwise we are locked out of requesting GPUs. Click it, and you should see a message reassuring that you will only start paying once your usage exceeds the 250 free trial credits.
 
 4.  On the billing screen we also see health checks, click `View all health checks`. You should see this screen.
-    
+
 ![img](./readme_dia/img3.png)
 
 5.  Click on create budget, you will need to give your budget a name and specify an amount. I gave the following `prproj` and `250`. Follow the default options for other steps. **In this way you will be alerted via email when your spending exceeds 50, 90 and 100 percent, but does NOT put a hard cap on your budget.**
@@ -66,7 +69,7 @@
 ![img](./readme_dia/img6.png)
 
 3.  In the GPUs (all regions) quota row click `ALL QUOTAS`,
-    
+
 ![img](./readme_dia/img7.png)
 
 tick the box, and then click `EDIT QUOTAS`,
@@ -82,8 +85,8 @@ this is the important screen, fill in the number of GPUs you want, fill in a req
 6.  The only way I could find to make a *preemptible* virtual machine was with the Cloud Console or the gcloud command line tool, using this link <https://cloud.google.com/ai-platform/deep-learning-vm/docs/pytorch_start_instance>. I assume you can use the gcloud command line tool here, more info could be found here <https://cloud.google.com/shell/docs/using-cloud-shell> or <https://cloud.google.com/sdk/docs/install>.
 
 7.  The relevant code snippet that will **DEPLOY** a virtual machine right away is:
-    
-```sh 
+
+```sh
 export IMAGE_FAMILY="pytorch-latest-gpu"
 export ZONE="europe-west4-[abc]"
 export INSTANCE_NAME="my-instance"
@@ -99,9 +102,9 @@ gcloud compute instances create $INSTANCE_NAME \
   --metadata="install-nvidia-driver=True" \
   --preemptible
 ```
-    
+
 You can change the `INSTANCE_NAME`, `IMAGE_FAMILY`, and `count` of gpus (if you have enough quota!).
-    
+
 ![img](./readme_dia/img9.png)
 
 **remember to stop the instance if you will not use it right away!!!**
@@ -189,7 +192,7 @@ EXTERNAL_IP: the external IP address of the instance that you want to connect to
 
 ![img](./readme_dia/img13.png)
 
-5. In the Category menu, navigate to Connection > SSH > Auth. 
+5. In the Category menu, navigate to Connection > SSH > Auth.
 
 6. In the Private key file for authentication field, browse to the location of your private key file.
 
@@ -262,7 +265,7 @@ here as usual, and finally start your long-running job when you are ready.
 3. Now with your job running in the "background" or in tmux, you can disconnect
    from the server if you want. **Be careful not to move any files that are
    being used by your job!!!**
-   
+
 4. If you want to see how your job is doing at any moment we need to re-enter the tmux session,
 
 ``` sh
@@ -285,7 +288,7 @@ It actually works very similar to git, it mounts your google drive disk as a
 directory, and then you can pull and push changes by using commands while inside
 this directory.
 
-### Install 
+### Install
 
 <a id="driveInstall"></a>
 
@@ -347,7 +350,7 @@ cd ~/gdrive
 
 2. Pull the files from your drive to the server using the following snippet, you
    might need to add some options.
-   
+
 ``` sh
 drive pull
 ```
